@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>wx-doctor</artifactId>
-        <groupId>com.lqf</groupId>
+        <artifactId>wxdoctor</artifactId>
+        <groupId>com.lqf.wxdoctor</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,9 +12,19 @@
     <artifactId>dao</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.lqf</groupId>
+            <groupId>com.lqf.wxdoctor</groupId>
             <artifactId>model</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.0.4.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.4.6</version>
         </dependency>
     </dependencies>
 

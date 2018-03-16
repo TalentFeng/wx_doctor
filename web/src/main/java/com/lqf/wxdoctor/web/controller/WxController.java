@@ -13,8 +13,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 
-import com.lqf.wx_doctor.model.*;
-
 @RestController
 public class WxController {
     @Value("${weixin.base.token}")

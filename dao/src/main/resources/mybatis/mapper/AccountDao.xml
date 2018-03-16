@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lqf.wxdoctor.dao.AccountDao">
+    <update id="createTableNotExist">
+        CREATE TABLE "account" (
+            ID INT,
+             NAME VARCHAR (50),
+             money DECIMAL (11, 2)
+             )
+    </update>
+    <select id="find" useCache="true" resultType="com.lqf.wxdoctor.model.Account">
+        SELECT * FROM account WHERE id=${id} or name like '${name}'
+    </select>
+</mapper>

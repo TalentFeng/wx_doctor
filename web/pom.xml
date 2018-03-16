@@ -66,8 +66,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.lqf</groupId>
-            <artifactId>model</artifactId>
+            <groupId>com.lqf.wxdoctor</groupId>
+            <artifactId>service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
