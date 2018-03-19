@@ -8,7 +8,7 @@
              money DECIMAL (11, 2)
              )
     </update>
-    <select id="find" useCache="true" resultType="com.lqf.wxdoctor.model.Account">
-        SELECT * FROM account WHERE id=${id} or name like '${name}'
+    <select id="find" resultType="com.lqf.wxdoctor.model.Account">
+        SELECT * FROM account
     </select>
 </mapper>
