@@ -1,22 +1,39 @@
 package com.lqf.wxdoctor.web.controller;
 
-import com.lqf.wxdoctor.model.WxMessageRequest;
+import com.lqf.wxdoctor.common.OkHttpUtil;
+import com.lqf.wxdoctor.domain.WxMessageRequest;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class WxController {
     @Value("${weixin.base.token}")
     String token;
+
+    @Value("${weixin.base.appid}")
+    String appId;
+
+    @Value("${weixin.base.app-secret}")
+    String appSecret;
+
+    @Value("${weixin.server.login}")
+    String wxLogin;
+
     @GetMapping(value = "/wechat")
     public String index(@RequestParam String echostr, @RequestParam String nonce,
     @RequestParam String signature, @RequestParam String timestamp) throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -55,5 +72,20 @@ public class WxController {
         a.setMsgType("text");
         a.setContent("test");
         return  a;
+    }
+
+    @GetMapping(value = "/wechat/login")
+    public String login(@RequestParam String code, HttpSession session) throws IOException {
+        Response response = OkHttpUtil.post(wxLogin, new HashMap<String, Object>() {
+            {
+                put("js_code", code);
+                put("appid", appId);
+                put("secret", appSecret);
+                put("grant_type", "authorization_code");
+            }
+        });
+        String s = response.body().string();
+        session.setAttribute("session", s);
+        return s;
     }
 }

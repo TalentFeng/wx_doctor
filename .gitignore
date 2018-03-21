@@ -1,8 +1,7 @@
 target/
 .mvn/
 logs/
-mprogram/
-!mprogram/src
+mprogram/node_modules
 *.yml
 *.properties
 
