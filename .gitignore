@@ -3,6 +3,8 @@ target/
 logs/
 mprogram/node_modules
 *.yml
+*.sql
+
 *.properties
 
 ### IntelliJ IDEA ###

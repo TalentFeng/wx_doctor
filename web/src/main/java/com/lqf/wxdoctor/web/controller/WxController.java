@@ -1,12 +1,17 @@
 package com.lqf.wxdoctor.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lqf.wxdoctor.common.OkHttpUtil;
+import com.lqf.wxdoctor.dao.UserDao;
+import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.domain.WxMessageRequest;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +20,7 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class WxController {
@@ -33,6 +35,9 @@ public class WxController {
 
     @Value("${weixin.server.login}")
     String wxLogin;
+
+    @Autowired
+    UserDao userDao;
 
     @GetMapping(value = "/wechat")
     public String index(@RequestParam String echostr, @RequestParam String nonce,
@@ -75,7 +80,7 @@ public class WxController {
     }
 
     @GetMapping(value = "/wechat/login")
-    public String login(@RequestParam String code, HttpSession session) throws IOException {
+    public boolean login(@RequestParam String code, HttpSession session) throws IOException {
         Response response = OkHttpUtil.post(wxLogin, new HashMap<String, Object>() {
             {
                 put("js_code", code);
@@ -84,8 +89,29 @@ public class WxController {
                 put("grant_type", "authorization_code");
             }
         });
-        String s = response.body().string();
-        session.setAttribute("session", s);
-        return s;
+        String json = response.body().string();
+        ObjectMapper mapper = new ObjectMapper();
+        Map map = mapper.readValue(json, Map.class);
+        String openId = map.get("openid").toString();
+        session.setAttribute("openid", openId);
+        session.setAttribute("session_key", map.get("session_key"));
+        User user = userDao.get(openId);
+        if (user == null) {
+            user = new User();
+            user.setBlh(0l);
+            user.setName("游客_" + new Date().getTime());
+            user.setOpenid(openId);
+            userDao.save(user);
+        }
+        if (user.getBlh() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @PostMapping(value = "/wechat/login")
+    public String login(@RequestParam String blh, @RequestParam String name, HttpSession session) throws IOException {
+
+        return "";
     }
 }
