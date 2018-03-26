@@ -26,7 +26,7 @@ public class OkHttpUtil {
         return okHttpClient;
     }
 
-    public static Response get(String url, Map<String, Object> dataMap) throws IOException
+    public static String get(String url, Map<String, Object> dataMap) throws IOException
     {
         StringBuffer sb = new StringBuffer();
         sb.append(url);
@@ -45,13 +45,13 @@ public class OkHttpUtil {
                 .build();
         try {
             Response response = okHttpClient.newCall(request).execute();
-            return response;
+            return response.body().string();
         } catch (IOException e) {
             throw e;
         }
     }
 
-    public static Response post(String url, Map<String, Object> dataMap) throws IOException
+    public static String post(String url, Map<String, Object> dataMap) throws IOException
     {
         FormBody.Builder body = new FormBody.Builder();
         for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
@@ -64,7 +64,7 @@ public class OkHttpUtil {
                 .build();
         try {
             Response response = okHttpClient.newCall(request).execute();
-            return response;
+            return response.body().string();
         } catch (IOException e) {
             throw e;
         }

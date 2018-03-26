@@ -1,20 +1,25 @@
 package com.lqf.wxdoctor.domain;
 
-public class User {
-  private Long id;
-  private String name;
-  private Long blh;
-  private String openid;
-  private java.sql.Timestamp created_time;
-  private java.sql.Timestamp modified_time;
 
-  public Long getId() {
+public class User {
+
+  private long id;
+  private String name;
+  private long blh;
+  private String openid;
+  private java.sql.Timestamp createdTime;
+  private java.sql.Timestamp modifiedTime;
+  private long isAdmin;
+
+
+  public long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(long id) {
     this.id = id;
   }
+
 
   public String getName() {
     return name;
@@ -24,13 +29,15 @@ public class User {
     this.name = name;
   }
 
-  public Long getBlh() {
+
+  public long getBlh() {
     return blh;
   }
 
-  public void setBlh(Long blh) {
+  public void setBlh(long blh) {
     this.blh = blh;
   }
+
 
   public String getOpenid() {
     return openid;
@@ -40,19 +47,31 @@ public class User {
     this.openid = openid;
   }
 
-  public java.sql.Timestamp getCreated_time() {
-    return created_time;
+
+  public java.sql.Timestamp getCreatedTime() {
+    return createdTime;
   }
 
-  public void setCreated_time(java.sql.Timestamp created_time) {
-    this.created_time = created_time;
+  public void setCreatedTime(java.sql.Timestamp createdTime) {
+    this.createdTime = createdTime;
   }
 
-  public java.sql.Timestamp getModified_time() {
-    return modified_time;
+
+  public java.sql.Timestamp getModifiedTime() {
+    return modifiedTime;
   }
 
-  public void setModified_time(java.sql.Timestamp modified_time) {
-    this.modified_time = modified_time;
+  public void setModifiedTime(java.sql.Timestamp modifiedTime) {
+    this.modifiedTime = modifiedTime;
   }
+
+
+  public long getIsAdmin() {
+    return isAdmin;
+  }
+
+  public void setIsAdmin(long isAdmin) {
+    this.isAdmin = isAdmin;
+  }
+
 }
