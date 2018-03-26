@@ -4,6 +4,7 @@ import App from './App'
 Vue.config.productionTip = false
 App.mpType = 'app'
 import '../static/weui/weui.css'
+
 const app = new Vue(App)
 app.$mount()
 
@@ -18,8 +19,22 @@ export default {
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: '线上微医',
       navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      'selectedColor': '#4ddb6f',
+      'list': [{
+        'pagePath': 'pages/index/index',
+        'text': '首页'
+      }, {
+        'pagePath': 'pages/counter/counter',
+        'text': '我的问题'
+      }, {
+        'pagePath': 'pages/login/login',
+        'text': '用户中心'
+      }]
     }
+
   }
 }

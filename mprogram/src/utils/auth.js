@@ -11,9 +11,7 @@ export function authRequest (url = '', config = {}) {
             },
             method: 'GET'
           }).then((res) => {
-            wx.redirectTo({
-              url: res.data
-            })
+            resolve()
           })
         },
         fail: (err) => {

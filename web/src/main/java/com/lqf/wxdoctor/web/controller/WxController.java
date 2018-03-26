@@ -3,7 +3,9 @@ package com.lqf.wxdoctor.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lqf.wxdoctor.common.CryptUtil;
 import com.lqf.wxdoctor.common.OkHttpUtil;
+import com.lqf.wxdoctor.dao.CaseDao;
 import com.lqf.wxdoctor.dao.UserDao;
+import com.lqf.wxdoctor.domain.Case;
 import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.domain.WxMessageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class WxController {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    CaseDao caseDao;
+
     @GetMapping(value = "/wechat")
     public String index(@RequestParam String echostr, @RequestParam String nonce,
     @RequestParam String signature, @RequestParam String timestamp) throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -66,7 +71,7 @@ public class WxController {
 
     @GetMapping(value = "/wechat/login")
     @Transactional
-    public String login(@RequestParam String code, HttpSession session) throws IOException {
+    public HashMap login(@RequestParam String code, HttpSession session) throws IOException {
         String json = OkHttpUtil.post(wxLogin, new HashMap<String, Object>() {
             {
                 put("js_code", code);
@@ -81,8 +86,7 @@ public class WxController {
         session.setAttribute("openid", openId);
         session.setAttribute("session_key", map.get("session_key"));
         User user = userDao.get(openId);
-        User user2 = userDao.get("cccc");
-        User user3 = userDao.get("dddd");
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
         if (user == null) {
             user = new User();
             user.setBlh(0l);
@@ -91,12 +95,18 @@ public class WxController {
             userDao.save(user);
         }
         if (user.getBlh() == 0) {
-            return "/pages/login/login";
+            hashMap.put("tab", "/pages/login/login");
+        }
+        List<Case> caseList = caseDao.list(user.getId());
+        if (caseList.size() > 0) {
+            hashMap.put("case", caseList);
+            hashMap.put("userInfo", user);
+            hashMap.put("tab", "/pages/index/index");
         }
         if (user.getIsAdmin() == 1) {
-            return "/pages/admin/admin";
+            hashMap.put("tab", "/pages/admin/admin");
         }
-        return "/pages/counter/counter";
+        return hashMap;
     }
 
     @PostMapping(value = "/wechat/login")

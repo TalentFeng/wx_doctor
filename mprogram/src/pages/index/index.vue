@@ -1,6 +1,5 @@
 <template>
   <div class="page">
-
   </div>
 </template>
 
@@ -8,7 +7,7 @@
   import card from '@/components/card'
 
   export default {
-    data() {
+    data () {
       return {}
     },
 
@@ -16,10 +15,8 @@
       card
     },
 
-    methods: {},
+    methods: {}
 
-    created() {
-    }
   }
 </script>
 

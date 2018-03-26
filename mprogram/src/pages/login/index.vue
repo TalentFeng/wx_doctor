@@ -23,7 +23,6 @@
       </div>
     </div>
     <button type="primary" class="weui-btn" @click="bind">绑定</button>
-    <button type="" class="weui-btn" @click="">游客登录</button>
   </div>
 </template>
 
