@@ -14,10 +14,13 @@ export function wxRequest (url, config) {
       data: {...data},
       method: method,
       header: {
-        'content-type': contentType
-        // 'Cookie': app.globalData.cookie  // 全局变量中获取 cookie
+        'content-type': contentType,
+        'Cookie': wx.getStorageSync('cookie')[0]
       },
-      success: (data) => resolve(data),
+      success: (res) => {
+        if (res.header['Set-Cookie']) { wx.setStorageSync('cookie', res.header['Set-Cookie']) }
+        resolve(res)
+      },
       fail: (err) => reject(err),
       complete: () => {
         wx.hideLoading()
