@@ -2,7 +2,7 @@
   <div class="page">
     <div class="userinfo">
       <img class="userinfo-avatar"
-           :src="userInfo.avatarUrl? userInfo.avatarUrl : defaultImg"
+           :src="userInfo.avatarUrl? defaultImg : defaultImg"
            background-size="cover" />
       <div class="userinfo-nickname">
         <card :text="userInfo.nickName"></card>

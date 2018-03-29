@@ -1,13 +1,11 @@
 package com.lqf.wxdoctor.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lqf.wxdoctor.common.CryptUtil;
-import com.lqf.wxdoctor.common.OkHttpUtil;
 import com.lqf.wxdoctor.dao.CaseDao;
-import com.lqf.wxdoctor.dao.UserDao;
 import com.lqf.wxdoctor.domain.Case;
 import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.domain.WxMessageRequest;
+import com.lqf.wxdoctor.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -22,6 +20,7 @@ import java.time.Instant;
 import java.util.*;
 
 @RestController
+@Transactional
 public class WxController {
     @Value("${weixin.base.token}")
     String token;
@@ -36,12 +35,11 @@ public class WxController {
     String wxLogin;
 
     @Autowired
-    UserDao userDao;
+    UserServiceImpl userService;
 
     @Autowired
     CaseDao caseDao;
 
-    @GetMapping(value = "/wechat")
     public String index(@RequestParam String echostr, @RequestParam String nonce,
     @RequestParam String signature, @RequestParam String timestamp) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         String list[] = new String[]{
@@ -70,30 +68,10 @@ public class WxController {
     }
 
     @GetMapping(value = "/wechat/login")
-    @Transactional
     public HashMap login(@RequestParam String code, HttpSession session) throws IOException {
-        String json = OkHttpUtil.post(wxLogin, new HashMap<String, Object>() {
-            {
-                put("js_code", code);
-                put("appid", appId);
-                put("secret", appSecret);
-                put("grant_type", "authorization_code");
-            }
-        });
-        ObjectMapper mapper = new ObjectMapper();
-        Map map = mapper.readValue(json, Map.class);
-        String openId = map.get("openid").toString();
-        session.setAttribute("openid", openId);
-        session.setAttribute("session_key", map.get("session_key"));
-        User user = userDao.get(openId);
+
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
-        if (user == null) {
-            user = new User();
-            user.setBlh(0l);
-            user.setName("游客_" + new Date().getTime());
-            user.setOpenid(openId);
-            userDao.save(user);
-        }
+        User user =userService.login(code, session);
         if (user.getBlh() == 0) {
             hashMap.put("tab", "/pages/login/login");
         }
@@ -109,7 +87,7 @@ public class WxController {
         return hashMap;
     }
 
-    @PostMapping(value = "/wechat/login")
+    @PostMapping(value = "/login")
     public String login(@RequestParam String blh, @RequestParam String name, HttpSession session) throws IOException {
 
         return "";
