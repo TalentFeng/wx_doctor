@@ -1,15 +1,22 @@
 package com.lqf.wxdoctor.domain;
 
 
-public class Userinfo {
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class UserInfo {
 
   private long uid;
   private long gender;
   private String country;
   private String city;
+  @JsonAlias("language")
   private String lang;
   private String province;
+  @JsonAlias("nickName")
   private String nickname;
+  @JsonAlias("avatarUrl")
   private String avatar;
 
 

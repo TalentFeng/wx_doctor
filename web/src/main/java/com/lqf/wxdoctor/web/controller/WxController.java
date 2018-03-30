@@ -5,7 +5,7 @@ import com.lqf.wxdoctor.dao.CaseDao;
 import com.lqf.wxdoctor.domain.Case;
 import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.domain.WxMessageRequest;
-import com.lqf.wxdoctor.service.impl.UserServiceImpl;
+import com.lqf.wxdoctor.wxservice.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -21,18 +21,10 @@ import java.util.*;
 
 @RestController
 @Transactional
+@RequestMapping("/wechat")
 public class WxController {
     @Value("${weixin.base.token}")
     String token;
-
-    @Value("${weixin.base.appid}")
-    String appId;
-
-    @Value("${weixin.base.app-secret}")
-    String appSecret;
-
-    @Value("${weixin.server.login}")
-    String wxLogin;
 
     @Autowired
     UserServiceImpl userService;
@@ -54,7 +46,7 @@ public class WxController {
         return "";
     }
 
-    @PostMapping(value = "/wechat", produces = MediaType.TEXT_XML_VALUE)
+    @PostMapping(value = "/", produces = MediaType.TEXT_XML_VALUE)
     public @ResponseBody
     WxMessageRequest reply(HttpServletRequest request, @RequestBody WxMessageRequest wxMessageRequest)
     {
@@ -67,11 +59,14 @@ public class WxController {
         return  a;
     }
 
-    @GetMapping(value = "/wechat/login")
-    public HashMap login(@RequestParam String code, HttpSession session) throws IOException {
-
-        HashMap<String, Object> hashMap = new HashMap<String, Object>();
-        User user =userService.login(code, session);
+    @GetMapping(value = "/login")
+    public Map login(@RequestParam String code, HttpSession session) throws IOException {
+        Map hashMap = new HashMap<String, Object>();
+        Map<String, String> map = userService.getWxSession(code);
+        String openId = map.get("openid");
+        User user = userService.login(openId);
+        session.setAttribute("openid", openId);
+        session.setAttribute("session_key", map.get("session_key"));
         if (user.getBlh() == 0) {
             hashMap.put("tab", "/pages/login/login");
         }
@@ -87,7 +82,7 @@ public class WxController {
         return hashMap;
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/saveUserInfo")
     public String login(@RequestParam String blh, @RequestParam String name, HttpSession session) throws IOException {
 
         return "";

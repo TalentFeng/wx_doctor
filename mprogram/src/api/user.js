@@ -16,8 +16,6 @@ export function getUserInfo () {
 
 export function saveUserInfo (userInfo) {
   return new Promise(() => {
-    authRequest('/wechat/user/save', {data: {
-      userInfo: userInfo
-    }})
+    authRequest('/user/save', {data: userInfo})
   })
 }

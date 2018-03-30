@@ -5,6 +5,6 @@
         insert INTO "user"(name, blh, openid) VALUES ('${name}', ${blh}, '${openid}')
     </insert>
     <select id="get" resultType="com.lqf.wxdoctor.domain.User">
-        SELECT * from "user" WHERE "user".openid = '${openId}'
+        SELECT id, name, blh from "user" WHERE "user".openid = '${openId}'
     </select>
 </mapper>

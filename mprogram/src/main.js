@@ -28,9 +28,9 @@ export default {
         'pagePath': 'pages/index/index',
         'text': '首页'
       }, {
-        'pagePath': 'pages/counter/counter',
-        'text': '我的问题'
-      }, {
+      //   'pagePath': 'pages/counter/counter',
+      //   'text': '我的问题'
+      // }, {
         'pagePath': 'pages/login/login',
         'text': '用户中心'
       }]

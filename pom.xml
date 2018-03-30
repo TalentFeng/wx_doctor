@@ -12,7 +12,8 @@
 		<module>web</module>
 		<module>service</module>
 		<module>common</module>
-	</modules>
+        <module>wxservice</module>
+    </modules>
 	<packaging>pom</packaging>
 
 	<name>wx-doctor</name>
