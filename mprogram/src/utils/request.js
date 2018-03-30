@@ -15,10 +15,12 @@ export function wxRequest (url, config) {
       method: method,
       header: {
         'content-type': contentType,
-        'Cookie': wx.getStorageSync('cookie')[0]
+        'Cookie': wx.getStorageSync('cookie')
       },
       success: (res) => {
-        if (res.header['Set-Cookie']) { wx.setStorageSync('cookie', res.header['Set-Cookie']) }
+        if (res.header['Set-Cookie']) {
+          wx.setStorageSync('cookie', res.header['Set-Cookie'])
+        }
         resolve(res)
       },
       fail: (err) => reject(err),
