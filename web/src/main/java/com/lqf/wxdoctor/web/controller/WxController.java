@@ -70,14 +70,12 @@ public class WxController {
         if (user.getBlh() == 0) {
             hashMap.put("tab", "/pages/login/login");
         }
+        session.setAttribute("uid", user.getId());
         List<Case> caseList = caseDao.list(user.getId());
         if (caseList.size() > 0) {
             hashMap.put("case", caseList);
             hashMap.put("userInfo", user);
             hashMap.put("tab", "/pages/index/index");
-        }
-        if (user.getIsAdmin() == 1) {
-            hashMap.put("tab", "/pages/admin/admin");
         }
         return hashMap;
     }

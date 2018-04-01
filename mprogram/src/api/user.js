@@ -19,3 +19,4 @@ export function saveUserInfo (userInfo) {
     authRequest('/user/save', {data: userInfo})
   })
 }
+

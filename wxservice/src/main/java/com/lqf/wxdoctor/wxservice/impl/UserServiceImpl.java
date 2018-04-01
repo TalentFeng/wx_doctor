@@ -7,17 +7,19 @@ import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.wxservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserDao userDao;
 
@@ -60,5 +62,11 @@ public class UserServiceImpl implements UserService {
         }
 
         throw new IllegalArgumentException(map.get("errmsg").toString());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        UserDetails userDetails = userDao.get(s);
+        return userDetails;
     }
 }

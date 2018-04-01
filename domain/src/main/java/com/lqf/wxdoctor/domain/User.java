@@ -1,7 +1,12 @@
 package com.lqf.wxdoctor.domain;
 
 
-public class User {
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+
+public class User implements UserDetails {
 
   private long id;
   private String name;
@@ -9,7 +14,6 @@ public class User {
   private String openid;
   private java.sql.Timestamp createdTime;
   private java.sql.Timestamp modifiedTime;
-  private long isAdmin;
 
 
   public long getId() {
@@ -66,12 +70,31 @@ public class User {
   }
 
 
-  public long getIsAdmin() {
-    return isAdmin;
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
   }
 
-  public void setIsAdmin(long isAdmin) {
-    this.isAdmin = isAdmin;
+  public String getPassword() {
+    return Long.toString(blh);
   }
 
+  public String getUsername() {
+    return openid;
+  }
+
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  public boolean isEnabled() {
+    return true;
+  }
 }

@@ -10,7 +10,6 @@
 		<module>domain</module>
 		<module>dao</module>
 		<module>web</module>
-		<module>service</module>
 		<module>common</module>
         <module>wxservice</module>
     </modules>
