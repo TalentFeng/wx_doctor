@@ -18,10 +18,10 @@ public class ExceptionController {
     @ResponseBody
     public Map handlerControllerException(HttpServletRequest request, Throwable ex)
     {
-        logger.info(ex.getMessage());
+        logger.info(ex.toString());
         Map map = new HashMap<String, String>() {
             {
-                put("err", ex.getMessage());
+                put("err", ex.toString());
             }
         };
         return map;

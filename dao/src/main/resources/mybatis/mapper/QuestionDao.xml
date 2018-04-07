@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lqf.wxdoctor.dao.QuestionDao">
+    <insert id="add">
+        <if test="question.title != null and question.content != null">
+            INSERT INTO question(title, content, created_user) VALUES (
+            '${question.title}', '${question.content}', '${question.createdUser}'
+            )
+        </if>
+    </insert>
+    <select id="list" resultType="com.lqf.wxdoctor.domain.Question">
+        SELECT question.*, question.created_time as createdTime, "user".name FROM question
+        LEFT JOIN "user" on created_user = "user".id
+        WHERE 1=1
+        <if test="uid != 0">
+            and created_user = ${uid}
+        </if>
+        LIMIT 20 OFFSET ${start}
+    </select>
+</mapper>

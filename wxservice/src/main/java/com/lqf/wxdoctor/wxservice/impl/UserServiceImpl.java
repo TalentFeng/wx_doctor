@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     String wxLogin;
 
     public User login(String openId) throws IOException {
-        User user = userDao.get(openId);
+        User user = userDao.get(openId, null, null);
         if (user == null) {
             user = new User();
             user.setBlh(0l);
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        UserDetails userDetails = userDao.get(s);
+        UserDetails userDetails = userDao.get(s, null, null);
         return userDetails;
     }
 }

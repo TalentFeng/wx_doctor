@@ -73,8 +73,9 @@ public class WxController {
         session.setAttribute("uid", user.getId());
         List<Case> caseList = caseDao.list(user.getId());
         if (caseList.size() > 0) {
-            hashMap.put("case", caseList);
-            hashMap.put("userInfo", user);
+//            hashMap.put("case", caseList);
+            hashMap.put("name", user.getName());
+            hashMap.put("blh", user.getBlh());
             hashMap.put("tab", "/pages/index/index");
         }
         return hashMap;
@@ -82,7 +83,6 @@ public class WxController {
 
     @PostMapping(value = "/saveUserInfo")
     public String login(@RequestParam String blh, @RequestParam String name, HttpSession session) throws IOException {
-
         return "";
     }
 }

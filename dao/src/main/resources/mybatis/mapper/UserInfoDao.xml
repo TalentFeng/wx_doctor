@@ -3,6 +3,10 @@
 <mapper namespace="com.lqf.wxdoctor.dao.UserInfoDao">
     <insert id="save">
         insert INTO "userinfo"(uid, gender, country, city, lang, province, nickname, avatar) VALUES (
-            ${uid}, ${gender}, '${country}', '${city}', '${lang}', '${province}', '${nickname}', '${avatar}')
+            ${userInfo.uid}, ${userInfo.gender}, '${userInfo.country}', '${userInfo.city}',
+            '${userInfo.lang}', '${userInfo.province}', '${userInfo.nickname}', '${userInfo.avatar}')
+        ON CONFLICT (uid) DO UPDATE
+            SET avatar = '${userInfo.avatar}',
+                nickname = '${userInfo.nickname}';
     </insert>
 </mapper>

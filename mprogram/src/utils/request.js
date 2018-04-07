@@ -20,10 +20,20 @@ export function wxRequest (url, config) {
       success: (res) => {
         if (res.header['Set-Cookie']) {
           wx.setStorageSync('cookie', res.header['Set-Cookie'])
+          wx.reLaunch({
+            url: '/pages/login/login'
+          })
         }
         resolve(res)
       },
-      fail: (err) => reject(err),
+      fail: (err) => {
+        wx.showToast({
+          title: '请求失败',
+          icon: 'loading',
+          duration: 2000
+        })
+        reject(err)
+      },
       complete: () => {
         wx.hideLoading()
       }

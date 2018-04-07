@@ -4,7 +4,19 @@
     <insert id="save" parameterType="com.lqf.wxdoctor.domain.User">
         insert INTO "user"(name, blh, openid) VALUES ('${name}', ${blh}, '${openid}')
     </insert>
+    <update id="update">
+        update "case" SET uid = ${uid} WHERE uid=${oldUid};
+        DELETE FROM "user" WHERE id=${uid};
+        update "user" SET id = ${uid}, openid='${openId}' WHERE id=${oldUid};
+    </update>
     <select id="get" resultType="com.lqf.wxdoctor.domain.User">
-        SELECT id, name, blh from "user" WHERE "user".openid = '${openId}'
+        SELECT id, name, blh from "user" WHERE 1=1
+        <if test="name != null and blh != null">
+            and "user".name = '${name}'
+            and "user".blh = '${blh}'
+        </if>
+        <if test="openId != null">
+            and "user".openid = '${openId}'
+        </if>
     </select>
 </mapper>

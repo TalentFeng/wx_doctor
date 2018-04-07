@@ -1,10 +1,9 @@
 <script>
-import {authRequest} from './utils/auth'
-
-export default {
-  created () {
-    authRequest()
-  }
+  import {login} from '@/api/user'
+  export default {
+    onShow () {
+      login()
+    }
 }
 </script>
 
