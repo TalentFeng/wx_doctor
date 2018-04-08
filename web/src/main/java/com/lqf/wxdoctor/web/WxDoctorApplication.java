@@ -16,4 +16,6 @@ public class WxDoctorApplication {
 		SpringApplication.run(WxDoctorApplication.class, args);
 	}
 
+
 }
+	
