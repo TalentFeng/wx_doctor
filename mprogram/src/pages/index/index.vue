@@ -59,7 +59,7 @@
         })
       },
       showQuestionDetail (id) {
-        this.navigateTo('questionDetail/questionDetail?id=' + id)
+        this.navigateTo('answer/answer?id=' + id)
       }
     },
     onShow () {

@@ -1,7 +1,9 @@
 package com.lqf.wxdoctor.web.controller;
 
+import com.lqf.wxdoctor.dao.CaseDao;
 import com.lqf.wxdoctor.dao.UserDao;
 import com.lqf.wxdoctor.dao.UserInfoDao;
+import com.lqf.wxdoctor.domain.Case;
 import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.domain.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     UserInfoDao userInfoDao;
@@ -23,8 +27,11 @@ public class UserController {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    CaseDao caseDao;
+
     @RequestMapping("/save")
-    public boolean save(@RequestBody UserInfo userInfo, HttpSession session) throws IOException {
+    public boolean save(@RequestBody UserInfo userInfo) throws IOException {
         String uid = session.getAttribute("uid").toString();
         String openId = session.getAttribute("openid").toString();
         User user = userDao.get(null, userInfo.getBlh(), userInfo.getName());
@@ -35,5 +42,11 @@ public class UserController {
             return true;
         }
         return false;
+    }
+
+    @RequestMapping("/case")
+    public List getCases(@RequestBody Map map) throws IOException {
+        List<Case> caseList = caseDao.list(Long.parseLong(map.get("id").toString()));
+        return caseList;
     }
 }

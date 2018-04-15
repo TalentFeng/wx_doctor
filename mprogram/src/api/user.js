@@ -42,3 +42,7 @@ export function login () {
   )
   })
 }
+
+export function getCases (params) {
+  return authRequest('/user/case', {data: params})
+}

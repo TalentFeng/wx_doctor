@@ -22,7 +22,7 @@ import java.util.*;
 @RestController
 @Transactional
 @RequestMapping("/wechat")
-public class WxController {
+public class WxController extends BaseController {
     @Value("${weixin.base.token}")
     String token;
 
@@ -73,6 +73,7 @@ public class WxController {
         session.setAttribute("uid", user.getId());
         List<Case> caseList = caseDao.list(user.getId());
         if (caseList.size() > 0) {
+            session.setAttribute("case", caseList);
 //            hashMap.put("case", caseList);
             hashMap.put("name", user.getName());
             hashMap.put("blh", user.getBlh());

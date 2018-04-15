@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface QuestionDao {
-    public boolean add(@Param("question") Question question);
-    public List<Question> list(@Param("uid") Long uid, @Param("start") int start);
+    boolean add(@Param("question") Question question);
+    List<Question> list(@Param("uid") Long uid, @Param("start") int start);
+    Question get(@Param("id") int id);
 }

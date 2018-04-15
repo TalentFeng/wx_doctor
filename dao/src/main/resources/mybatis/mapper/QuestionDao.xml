@@ -17,4 +17,10 @@
         </if>
         LIMIT 20 OFFSET ${start}
     </select>
+    <select id="get" resultType="com.lqf.wxdoctor.domain.Question">
+        SELECT question.*, question.created_time as createdTime, "user".name, question.created_user as  createdUser FROM question
+        LEFT JOIN "user" on created_user = "user".id
+        WHERE 1=1
+        AND question.id=${id}
+    </select>
 </mapper>

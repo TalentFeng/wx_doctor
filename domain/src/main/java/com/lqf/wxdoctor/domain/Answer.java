@@ -1,13 +1,24 @@
 package com.lqf.wxdoctor.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Answer {
 
   private long id;
   private long qid;
   private String content;
   private long createdUser;
+  @JsonFormat(pattern = "yyyy-mm-dd hh:mm:ss")
   private java.sql.Timestamp createdTime;
+  private String name;
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 
   public long getId() {
     return id;
