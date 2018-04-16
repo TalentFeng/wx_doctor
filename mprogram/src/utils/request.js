@@ -15,7 +15,7 @@ export function wxRequest (url, config) {
       method: method,
       header: {
         'content-type': contentType,
-        'Cookie': wx.getStorageSync('cookie')
+        'Cookie': wx.getStorageSync('cookie')[0]
       },
       success: (res) => {
         if (res.header['Set-Cookie']) {
