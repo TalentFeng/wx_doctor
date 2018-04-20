@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lqf.wxdoctor.dao.AnswerDao">
     <insert id="add">
-        INSERT INTO answer(qid, content, created_user) VALUES (${answer.qid}, '${answer.content}', ${answer.createdUser})
+        INSERT INTO answer(qid, content, created_user) VALUES (#{answer.qid}, #{answer.content}, #{answer.createdUser})
     </insert>
     <select id="list" resultType="com.lqf.wxdoctor.domain.Answer">
       SELECT *, answer.created_time as createdTime FROM answer LEFT JOIN "user" on created_user = "user".id
-      WHERE qid=${questionId} ORDER BY answer.created_time desc
+      WHERE qid=#{questionId} ORDER BY answer.created_time desc
     </select>
 </mapper>

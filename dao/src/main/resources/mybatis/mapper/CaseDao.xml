@@ -4,6 +4,6 @@
     <select id="list" resultType="com.lqf.wxdoctor.domain.Case">
         SELECT
             blh2, inspection_item, inspection_site, report_status, report_doctor, audit_doctor, result, fee_remark, fee_status, reg_date, rep_date, prt_date, sj_doc_phone, clinical_diagnosis, audit_date, department, reg_doc
-        from "case" WHERE uid=${uid}
+        from "case" WHERE uid=#{uid}
     </select>
 </mapper>

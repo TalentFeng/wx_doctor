@@ -13,7 +13,7 @@
         LEFT JOIN "user" on created_user = "user".id
         WHERE 1=1
         <if test="uid != 0">
-            and created_user = ${uid}
+            and created_user = #{uid}
         </if>
         LIMIT 20 OFFSET ${start}
     </select>
@@ -21,6 +21,6 @@
         SELECT question.*, question.created_time as createdTime, "user".name, question.created_user as  createdUser FROM question
         LEFT JOIN "user" on created_user = "user".id
         WHERE 1=1
-        AND question.id=${id}
+        AND question.id=#{id}
     </select>
 </mapper>
