@@ -9,13 +9,15 @@ export function wxRequest (url, config) {
     wx.showLoading({
       title: '正在加载中'
     })
+    let cookie = wx.getStorageSync('cookie')
+    cookie = typeof cookie === 'object' ? cookie[0] : cookie
     wx.request({
       url: url,
       data: {...data},
       method: method,
       header: {
         'content-type': contentType,
-        'Cookie': wx.getStorageSync('cookie')[0]
+        'Cookie': cookie
       },
       success: (res) => {
         if (res.header['Set-Cookie']) {

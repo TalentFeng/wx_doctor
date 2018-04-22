@@ -9,16 +9,20 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ExcelUtil {
 
 
-    public static List<?> readXlsx(FileInputStream fin) throws IOException {
+    public static List<?> readXlsx(InputStream in) throws IOException {
         List list = new ArrayList();
-        XSSFWorkbook workbook = new XSSFWorkbook(fin);
+        XSSFWorkbook workbook = new XSSFWorkbook(in);
         Sheet sheet = workbook.getSheetAt(0);
         for (int i = 0; i < sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
@@ -68,18 +72,37 @@ public class ExcelUtil {
     }
 
     public static void main(String[] args) throws IOException {
-        File excelFile = new File("C:\\Users\\viruser.v-desktop\\Documents\\WeChat Files\\talent_captain\\Files\\治疗过的GIST患者名单180208.xlsx");
+        File excelFile = new File("/Users/genius/Desktop/治疗过的GIST患者名单180208.xlsx");
         FileInputStream in = new FileInputStream(excelFile); //文件流
         List<List> list = (List<List>) readXlsx(in);
-        List header = list.remove(0);
+        Pattern pattern = Pattern.compile("[\\u4E00-\\u9FA5\\w]*");
+        List header = Arrays.asList(list.remove(0).stream().map(x -> {
+            Matcher matcher = pattern.matcher(x.toString());
+            matcher.find();
+            return "\"" + matcher.group() + "\"";}).toArray());
         StringBuilder sb = new StringBuilder("CREATE TABLE gist_patient( id serial primary key,");
-        sb.append(header.stream().map(x -> "\"" + x + "\" varchar(500)").reduce((x, y) -> x + "," + y).get());
+        sb.append(header.stream().map(x -> x + " varchar(500)").reduce((x, y) -> x + "," + y).get());
         sb.append(")");
         String createSql = sb.toString();
         StringBuilder sb2 = new StringBuilder("insert into gist_patient(");
-        sb2.append(header.stream().map(x -> "\"" + x + "\"").reduce((x, y) -> x + "," + y).get());
+        sb2.append(header.stream().reduce((x, y) -> x + "," + y).get());
         sb2.append(") values (");
-        sb2.append(list.stream().map(x -> x.stream().map(a -> "\"" + a + "\"").reduce((b, c) -> b + "," + c).get()).reduce((x, y) -> x + ")(" + y).get());
+        sb2.append(list.stream().map(x -> {
+            int size = header.size() - x.size();
+            if (size > 0) {
+                while (size-- != 0) {
+                    x.add("");
+                }
+                size = 0;
+            }
+            if (size < 0) {
+                while (size++ != 0) {
+                    x.remove(x.size() - 1);
+                }
+            }
+            return x.stream().map(a -> "'" + a.toString().replaceAll("\"", "\\\"") + "'").reduce((b, c) -> b + "," + c).get();
+        }).reduce((x, y) -> x + "),(" + y).get());
+        sb2.append(")");
         String c = sb2.toString();
         c = "1";
     }

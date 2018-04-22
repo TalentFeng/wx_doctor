@@ -1,7 +1,9 @@
 package com.lqf.wxdoctor.wxservice.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lqf.wxdoctor.common.ExcelUtil;
 import com.lqf.wxdoctor.common.OkHttpUtil;
+import com.lqf.wxdoctor.dao.GistDao;
 import com.lqf.wxdoctor.dao.UserDao;
 import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.wxservice.UserService;
@@ -14,14 +16,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    GistDao gistDao;
 
     @Value("${weixin.base.appid}")
     String appId;
@@ -62,6 +69,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         throw new IllegalArgumentException(map.get("errmsg").toString());
+    }
+
+    @Override
+    public boolean handleXlsxFile(InputStream inputStream) throws IOException {
+        List<List> list = (List<List>) ExcelUtil.readXlsx(inputStream);
+
+        return false;
     }
 
     @Override

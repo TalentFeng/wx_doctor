@@ -6,13 +6,17 @@ import com.lqf.wxdoctor.dao.UserInfoDao;
 import com.lqf.wxdoctor.domain.Case;
 import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.domain.UserInfo;
+import com.lqf.wxdoctor.wxservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +33,9 @@ public class UserController extends BaseController {
 
     @Autowired
     CaseDao caseDao;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping("/save")
     public boolean save(@RequestBody UserInfo userInfo) throws IOException {
@@ -48,5 +55,11 @@ public class UserController extends BaseController {
     public List getCases(@RequestBody Map map) throws IOException {
         List<Case> caseList = caseDao.list(Long.parseLong(map.get("id").toString()));
         return caseList;
+    }
+
+    @RequestMapping("/upload")
+    public boolean upload(@RequestBody MultipartFile file) throws IOException {
+        userService.handleXlsxFile(file.getInputStream());
+        return  false;
     }
 }
