@@ -6,12 +6,8 @@
       </div>
       <div class="weui-panel__bd" v-for="item in cases" :key="item.id">
         <div class="weui-media-box weui-media-box_text">
-          <h4 class="weui-media-box__title"><a>{{item.inspection_item}}</a></h4>
-          <p class="weui-media-box__desc">{{item.result}}</p>
+          <h4 class="weui-media-box__title" v-for="(val, name) in item" :key="name" v-if="name != 'id'">{{name}}: {{val}}</h4>
           <ul class="weui-media-box__info">
-            <li class="weui-media-box__info__meta">报告医生: {{item.report_doctor}}</li>
-            <li class="weui-media-box__info__meta">报告时间:{{item.rep_date}}</li>
-            <li class="weui-media-box__info__meta weui-media-box__info__meta_extra"></li>
           </ul>
         </div>
       </div>

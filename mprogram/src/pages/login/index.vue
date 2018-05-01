@@ -22,14 +22,14 @@
         </div>
       </div>
     </div>
-    <button type="info" v-if="isBind" class="weui-btn" >已绑定</button>
+    <button type="warn" v-if="isBind" class="weui-btn" @click="unbind" >解除绑定</button>
     <button type="primary" v-else class="weui-btn" @click="bind">绑定</button>
   </div>
 </template>
 
 <script>
   import card from '@/components/card'
-  import {getUserInfo, saveUserInfo, login} from '@/api/user'
+  import {getUserInfo, saveUserInfo, login, bindBlh} from '@/api/user'
 
   export default {
     data () {
@@ -47,7 +47,7 @@
     methods: {
       bind () {
         let vm = this
-        saveUserInfo(this.userInfo).then(res => {
+        bindBlh(this.userInfo.name, this.userInfo.blh).then(res => {
           if (res.data === false) {
             wx.showToast({
               title: '绑定失败',
@@ -59,9 +59,13 @@
           }
         })
       },
+      unbind () {
+        this.isBind = false
+      },
       login () {
         let vm = this
         login().then(({data}) => {
+          saveUserInfo(vm.userInfo)
           if (data.blh !== undefined && data.name !== undefined) {
             vm.isBind = true
             vm.userInfo.name = data.name
@@ -73,32 +77,25 @@
 
     mounted () {
       let vm = this
-      wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-        success: function (res) {
-          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-          wx.uploadFile({
-            url: 'http://localhost:8080/user/upload',
-            filePath: res.tempFilePaths[0],
-            name: 'file'
-          })
-        }
-      })
+//      wx.chooseImage({
+//        count: 1, // 默认9
+//        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+//        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+//        success: function (res) {
+//          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+//          wx.uploadFile({
+//            url: 'http://localhost:8080/user/upload',
+//            filePath: res.tempFilePaths[0],
+//            name: 'file'
+//          })
+//        }
+//      })
       vm.isBind = false
       // 调用应用实例的方法获取全局数据
       getUserInfo().then((res) => {
         vm.userInfo = Object.assign(res.userInfo, vm.userInfo)
-//        let userinfo = wx.getStorageSync('userinfo')
-//        if (userinfo) {
-//          let data = userinfo.data
-//          vm.isBind = true
-//          vm.userInfo.name = data.name
-//          vm.userInfo.blh = data.blh
-//        } else {
+      }).finally(() => {
         vm.login()
-//        }
       })
     }
   }

@@ -43,6 +43,10 @@ export function login () {
   })
 }
 
+export function bindBlh (name, blh) {
+  return authRequest('/user/bind', {data: {name: name, blh: blh}})
+}
+
 export function getCases (params) {
   return authRequest('/user/case', {data: params})
 }

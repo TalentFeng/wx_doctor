@@ -2,9 +2,9 @@ package com.lqf.wxdoctor.web.controller;
 
 import com.lqf.wxdoctor.common.CryptUtil;
 import com.lqf.wxdoctor.dao.CaseDao;
-import com.lqf.wxdoctor.domain.Case;
 import com.lqf.wxdoctor.domain.User;
 import com.lqf.wxdoctor.domain.WxMessageRequest;
+import com.lqf.wxdoctor.wxservice.UserService;
 import com.lqf.wxdoctor.wxservice.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,20 +65,17 @@ public class WxController extends BaseController {
         Map<String, String> map = userService.getWxSession(code);
         String openId = map.get("openid");
         User user = userService.login(openId);
-        session.setAttribute("openid", openId);
+        session.setAttribute("user", user);
         session.setAttribute("session_key", map.get("session_key"));
         if (user.getBlh() == 0) {
             hashMap.put("tab", "/pages/login/login");
-        }
-        session.setAttribute("uid", user.getId());
-        List<Case> caseList = caseDao.list(user.getId());
-        if (caseList.size() > 0) {
-            session.setAttribute("case", caseList);
-//            hashMap.put("case", caseList);
-            hashMap.put("name", user.getName());
-            hashMap.put("blh", user.getBlh());
+        } else {
+            List<Map> cases = userService.getCases(user.getBlh());
             hashMap.put("tab", "/pages/index/index");
+            hashMap.put("blh", user.getBlh());
+            hashMap.put("name", cases.get(0).get("姓名"));
         }
+
         return hashMap;
     }
 

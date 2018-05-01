@@ -39,22 +39,34 @@ public class UserController extends BaseController {
 
     @RequestMapping("/save")
     public boolean save(@RequestBody UserInfo userInfo) throws IOException {
-        String uid = session.getAttribute("uid").toString();
-        String openId = session.getAttribute("openid").toString();
-        User user = userDao.get(null, userInfo.getBlh(), userInfo.getName());
-        if (user != null) {
-            userDao.update(Long.parseLong(uid), user.getId(), openId);
-            userInfo.setUid(Long.parseLong(uid));
-            userInfoDao.save(userInfo);
-            return true;
+        User user = (User) session.getAttribute("user");
+        userInfo.setUid(user.getId());
+        userInfoDao.save(userInfo);
+        return true;
+    }
+
+    @RequestMapping("/bind")
+    public boolean bind(@RequestBody Map map) throws IOException {
+        int blh = Integer.valueOf(map.get("blh").toString());
+        String name = (String) map.get("name");
+        List<Map> cases = userDao.getCases(blh);
+        if (cases.size() > 0 && cases.get(0).get("姓名").toString().equalsIgnoreCase(name)) {
+            User user = (User) session.getAttribute("user");
+            user.setBlh(blh);
+            user.setName(name);
+            return userDao.save(user);
         }
         return false;
     }
 
     @RequestMapping("/case")
     public List getCases(@RequestBody Map map) throws IOException {
-        List<Case> caseList = caseDao.list(Long.parseLong(map.get("id").toString()));
-        return caseList;
+        User user = userDao.load(Integer.valueOf(map.get("id").toString()));
+        if (this.getUser().getIsAdmin() == 1) {
+            List<Map> caseList = userDao.getCases(user.getBlh());
+            return caseList;
+        }
+        return null;
     }
 
     @RequestMapping("/upload")

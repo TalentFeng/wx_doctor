@@ -20,7 +20,7 @@ export function wxRequest (url, config) {
         'Cookie': cookie
       },
       success: (res) => {
-        if (res.header['Set-Cookie']) {
+        if (res.header['Set-Cookie'] || (typeof res.login !== 'undefined' && res.login === false)) {
           wx.setStorageSync('cookie', res.header['Set-Cookie'])
           wx.reLaunch({
             url: '/pages/login/login'

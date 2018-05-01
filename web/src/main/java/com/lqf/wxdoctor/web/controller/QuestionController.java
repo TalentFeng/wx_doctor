@@ -30,14 +30,14 @@ public class QuestionController extends BaseController {
 
     @RequestMapping("add")
     public boolean add(@RequestBody Question question) {
-        Long uid = Long.parseLong(session.getAttribute("uid").toString());
+        Long uid = (long) getUser().getId();
         question.setCreatedUser(uid);
         return questionDao.add(question);
     }
 
     @RequestMapping("list")
     public List list(@RequestBody Map map) {
-        Long uid = Long.parseLong(session.getAttribute("uid").toString());
+        Long uid = (long) getUser().getId();
         int start = Integer.parseInt(map.get("start").toString());
         return questionDao.list(uid, start);
     }

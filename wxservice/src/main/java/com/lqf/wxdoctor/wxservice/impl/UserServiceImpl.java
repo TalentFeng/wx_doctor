@@ -43,12 +43,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userDao.get(openId, null, null);
         if (user == null) {
             user = new User();
-            user.setBlh(0l);
+            user.setBlh(0);
             user.setName("游客_" + new Date().getTime());
-            user.setOpenid(openId);
+            user.setOpenId(openId);
             userDao.save(user);
         }
         return user;
+    }
+
+    public List<Map> getCases(int blh) {
+        return userDao.getCases(blh);
     }
 
     public Map getWxSession(String code) throws IOException {

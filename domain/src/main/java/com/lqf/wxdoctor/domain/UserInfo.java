@@ -18,25 +18,6 @@ public class UserInfo {
   private String nickname;
   @JsonAlias("avatarUrl")
   private String avatar;
-  private String blh;
-  private String name;
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-
-  public String getBlh() {
-    return blh;
-  }
-
-  public void setBlh(String blh) {
-    this.blh = blh;
-  }
 
   public long getUid() {
     return uid;

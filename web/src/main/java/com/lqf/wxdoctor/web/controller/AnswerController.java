@@ -21,7 +21,7 @@ public class AnswerController extends BaseController {
 
     @RequestMapping("add")
     public boolean add(@RequestBody Answer answer, HttpSession session) {
-        Long uid = Long.parseLong(session.getAttribute("uid").toString());
+        Long uid = (long) getUser().getId();
         answer.setCreatedUser(uid);
         return answerDao.add(answer);
     }

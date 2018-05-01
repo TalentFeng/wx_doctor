@@ -8,19 +8,20 @@ import java.util.Collection;
 
 public class User implements UserDetails {
 
-  private long id;
+  private int id;
   private String name;
-  private long blh;
-  private String openid;
+  private int blh;
+  private String openId;
   private java.sql.Timestamp createdTime;
   private java.sql.Timestamp modifiedTime;
+  private int isAdmin;
 
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
@@ -34,21 +35,21 @@ public class User implements UserDetails {
   }
 
 
-  public long getBlh() {
+  public int getBlh() {
     return blh;
   }
 
-  public void setBlh(long blh) {
+  public void setBlh(int blh) {
     this.blh = blh;
   }
 
 
-  public String getOpenid() {
-    return openid;
+  public String getOpenId() {
+    return openId;
   }
 
-  public void setOpenid(String openid) {
-    this.openid = openid;
+  public void setOpenId(String openId) {
+    this.openId = openId;
   }
 
 
@@ -79,7 +80,7 @@ public class User implements UserDetails {
   }
 
   public String getUsername() {
-    return openid;
+    return openId;
   }
 
   public boolean isAccountNonExpired() {
@@ -96,5 +97,13 @@ public class User implements UserDetails {
 
   public boolean isEnabled() {
     return true;
+  }
+
+  public int getIsAdmin() {
+    return isAdmin;
+  }
+
+  public void setIsAdmin(int isAdmin) {
+    this.isAdmin = isAdmin;
   }
 }
